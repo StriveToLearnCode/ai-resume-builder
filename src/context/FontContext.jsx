@@ -53,7 +53,6 @@ export function FontProvider({ children, resumeId, resumeInfo }) {
       try {
         await GlobalApi.updateResumeDetail(resumeId, payload, "options");
         console.log("Font options 同步成功");
-        toast("Font options 同步成功");
       } catch (err) {
         console.error("Font options 同步失败", err);
         toast.error("Font options 同步失败，请重试");
