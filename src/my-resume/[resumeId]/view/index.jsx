@@ -6,7 +6,7 @@ import jsPDF from 'jspdf';
 import { useContext, useRef } from 'react'
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next'
-
+import { FontProvider } from '@/context/FontContext';
 function ViewResume() {
   const { t } = useTranslation()
   const resumeId = useParams().resumeId;
