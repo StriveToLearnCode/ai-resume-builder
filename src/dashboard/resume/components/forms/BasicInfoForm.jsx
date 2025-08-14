@@ -109,10 +109,7 @@ function BasicInfoForm() {
     setLoading(true)
     try {
       const payload = { data: { education: cleanFormData } }
-      const res = await GlobalApi.updateResumeDetail(params?.resumeId, payload)
-      if (res?.data?.data) {
-        setResumeInfo(res.data.data)
-      }
+      await GlobalApi.updateResumeDetail(params?.resumeId, payload)
       toast.success(t('update_success'))
     } catch (error) {
       console.error(error)
