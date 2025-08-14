@@ -19,18 +19,26 @@ function SkillsForm() {
   const [loading, setLoading] = useState(false)
   const prompt = useMemo(() => {
   if(!resumeInfo) return
-  return `你是一名专业简历写作助手。请根据以下简历信息 resumeInfo，生成大约6条技能描述。
+  return `你是一名专业简历写作助手。根据以下简历信息 resumeInfo，生成 6 条技能描述：
 
-  要求：
-  - 每条技能点控制在30到40字，句子完整、简洁且有力；
-  - 突出技能的实际应用和优势，符合职业简历风格；
-  - 多次调用时请尽量避免重复，确保内容多样化；
-  - 请以“- ”开头列出，每条一行，直接输出列表内容，不要额外说明。
+  每条技能控制在 30 到 40 个字，句子完整、简洁、有力；
 
-  resumeInfo:
-  ${JSON.stringify(resumeInfo)}
+  突出技能的实际应用和优势，符合职业简历风格；
 
-  请开始输出：
+  每次生成必须与之前不同，句式、动词、专业术语和表达方式尽量多样化；
+  不要和我给你发的内容有重复的点
+  使用多种动词和短语，如“精通”“掌握”“熟练运用”“具备能力”等，避免模板化；
+    请全部使用中文输出，不要夹杂英文或拼音。
+  输出顺序、结构和内容尽量随机化，使每次调用结果独特；
+
+  为保证多样化，在提示中加入随机标识： ${Date.now()}-${Math.floor(Math.random()*1000)}；
+
+  以 “- ” 开头列出，每条一行，直接输出列表内容，不要额外说明；
+
+  随机标识: ${Date.now()}-${Math.floor(Math.random()*1000)}
+  resumeInfo: ${JSON.stringify(resumeInfo)}
+
+  请直接生成技能列表，确保每次输出都不重复且自然。
   -
   `
 }, [resumeInfo])

@@ -6,7 +6,7 @@ const ai = new GoogleGenAI({
 
 export async function AIChatSession(text) {
   const response = await ai.models.generateContent({
-    model: 'learnlm-2.0-flash-experimental',
+    model: 'gemma-3n-e2b-it',
     contents: [
       {
         role: 'user',

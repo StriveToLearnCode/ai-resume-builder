@@ -72,7 +72,7 @@ const ResumePreview = forwardRef(({ fixedWidth = false }, ref) => {
           items={modules.map(m => m.order)}
           strategy={verticalListSortingStrategy}
         >
-          <div ref={ref} className={`shadow-lg py-10 px-14 min-h-[826px] ${fixedWidth ? 'w-[794px]' : ''} whitespace-pre-wrap break-words`}>
+          <div ref={ref} className={`shadow-lg py-10 px-14 min-h-[826px] whitespace-pre-wrap break-words`}>
             {template === 'template1' && <ResumePreviewTemplate1 modules={modules} resumeInfo={resumeInfo} />}
             {template === 'template2' && <ResumePreviewTemplate2 resumeInfo={resumeInfo} modules={modules}/>}
           </div>

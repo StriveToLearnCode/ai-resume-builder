@@ -45,8 +45,7 @@ function ViewResume() {
       const result = await snapdom(element, {
         margin: 0,
         printBackground: true,
-        scale: 1,
-        width: 896, // 固定宽度
+        scale: 1, // 固定比例，避免 EncodingError
       });
 
       const imgDataUrl = await result.toPng();
