@@ -16,7 +16,7 @@ function BasicInfo({ resumeInfo, order }) {
     <div
       className={`space-y-2 mt-2 ${fontClass} whitespace-pre-wrap break-words`}
       style={{
-        lineHeight: lineHeight,
+        lineHeight,
         padding: margin,
       }}
     >
@@ -35,27 +35,40 @@ function BasicInfo({ resumeInfo, order }) {
       {/* 学历 */}
       {resumeInfo?.education &&
         resumeInfo.education.map((item, index) => (
-          <div style={{ fontSize: baseSize }} className="font-semibold" key={item.id || index}>
-            {`1.${index + 1} - ${item.universityName} - ${item.degree} - ${item.major}`}
-            <span className="ml-2">
+          <div
+            style={{ fontSize: baseSize }}
+            className="font-semibold"
+            key={item.id || index}
+          >
+            {/* 学校 - 学位 - 专业 */}
+            <span className="inline-block">
+              {`1.${index + 1} - ${item.universityName} - ${item.degree} - ${item.major}`}
+            </span>
+            {/* 日期 */}
+            <span className="ml-2 inline-block">
               ({formatMonth(item.startDate)} - {formatMonth(item.endDate)})
             </span>
+
             {/* 奖项 */}
-            <ul className="list-disc px-8">
-              {item?.awards &&
-                item.awards.map((award, idx) => (
+            {item?.awards?.length > 0 && (
+              <ul className="list-disc px-8">
+                {item.awards.map((award, idx) => (
                   <li className="p-1" key={idx}>
-                    {t('awarded')}: {award.title}
-                    <span className="text-red-500 font-bold">{award.level}</span>
+                    {t('awarded')}: {award.title}{' '}
+                    <span className="text-red-500 font-bold">{award.level}</span>{' '}
                     {award.prize}
                   </li>
                 ))}
-            </ul>
+              </ul>
+            )}
           </div>
         ))}
 
       {/* Github & 博客 */}
-      <p style={{ fontSize: baseSize }} className="whitespace-pre-wrap break-word">
+      <p
+        style={{ fontSize: baseSize }}
+        className="whitespace-pre-wrap break-words"
+      >
         {resumeInfo?.github && (
           <span className="mr-1">
             <span className="font-bold">{t('github')}：</span>

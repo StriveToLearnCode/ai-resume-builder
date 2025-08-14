@@ -19,7 +19,6 @@ function BasicInfoForm() {
   // 初始化 formData
   useEffect(() => {
     if (resumeInfo?.education && Array.isArray(resumeInfo.education)) {
-      // 确保每条教育经历有唯一 id
       const dataWithId = resumeInfo.education.map((item, index) => ({
         id: item.id || `edu-${index}-${Date.now()}`,
         ...item,
@@ -30,48 +29,58 @@ function BasicInfoForm() {
     }
   }, [resumeInfo])
 
-  // 修改某条教育经历字段
+  // 修改教育经历字段并同步 Context
   const handleEducationChange = (index, field, value) => {
     setFormData(prev => {
       const newData = [...prev]
       newData[index][field] = value
+      setResumeInfo({ ...resumeInfo, education: newData })
       return newData
     })
   }
 
-  // 修改奖项字段
+  // 修改奖项字段并同步 Context
   const handleAwardChange = (eduIndex, awardIndex, field, value) => {
     setFormData(prev => {
       const newData = [...prev]
       if (!newData[eduIndex].awards) newData[eduIndex].awards = []
       if (!newData[eduIndex].awards[awardIndex]) newData[eduIndex].awards[awardIndex] = {}
       newData[eduIndex].awards[awardIndex][field] = value
+      setResumeInfo({ ...resumeInfo, education: newData })
       return newData
     })
   }
 
-  // 添加教育经历
+  // 添加教育经历并同步 Context
   const addEducation = () => {
-    setFormData(prev => [
-      ...prev,
-      {
-        id: `edu-${Date.now()}`,
-        universityName: '',
-        startDate: '',
-        endDate: '',
-        degree: '',
-        major: '',
-        awards: []
-      }
-    ])
+    setFormData(prev => {
+      const newData = [
+        ...prev,
+        {
+          id: `edu-${Date.now()}`,
+          universityName: '',
+          startDate: '',
+          endDate: '',
+          degree: '',
+          major: '',
+          awards: []
+        }
+      ]
+      setResumeInfo({ ...resumeInfo, education: newData })
+      return newData
+    })
   }
 
-  // 删除教育经历
+  // 删除教育经历并同步 Context
   const removeEducation = (index) => {
-    setFormData(prev => prev.filter((_, i) => i !== index))
+    setFormData(prev => {
+      const newData = prev.filter((_, i) => i !== index)
+      setResumeInfo({ ...resumeInfo, education: newData })
+      return newData
+    })
   }
 
-  // 添加奖项
+  // 添加奖项并同步 Context
   const addAward = (eduIndex) => {
     setFormData(prev => {
       const newData = [...prev]
@@ -81,31 +90,31 @@ function BasicInfoForm() {
         level: '',
         prize: ''
       })
+      setResumeInfo({ ...resumeInfo, education: newData })
       return newData
     })
   }
 
-  // 删除奖项
+  // 删除奖项并同步 Context
   const removeAward = (eduIndex, awardIndex) => {
     setFormData(prev => {
       const newData = [...prev]
       if (!newData[eduIndex].awards) return newData
       newData[eduIndex].awards.splice(awardIndex, 1)
+      setResumeInfo({ ...resumeInfo, education: newData })
       return newData
     })
   }
 
-  // 提交表单
+  // 提交表单到后端
   const handleSubmit = async (e) => {
     e.preventDefault()
     // eslint-disable-next-line no-unused-vars
-    const cleanFormData = formData.map(({ id, awards, ...rest }) => {
-      const cleanedAwards = Array.isArray(awards)
-        // eslint-disable-next-line no-unused-vars
-        ? awards.map(({ id, ...awardRest }) => awardRest)
-        : []
-      return { ...rest, awards: cleanedAwards }
-    })
+    const cleanFormData = formData.map(({ id, awards, ...rest }) => ({
+      ...rest,
+      // eslint-disable-next-line no-unused-vars
+      awards: Array.isArray(awards) ? awards.map(({ id, ...awardRest }) => awardRest) : []
+    }))
     setLoading(true)
     try {
       const payload = { data: { education: cleanFormData } }

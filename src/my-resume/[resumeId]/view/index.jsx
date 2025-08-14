@@ -104,7 +104,7 @@ function ViewResume() {
         </div>
       </div>
       <FontProvider resumeId={resumeId} resumeInfo={resumeInfo}>
-        <div className="w-[896px] mx-auto shadow-lg rounded-md border border-gray-200">
+        <div className="w-[794px] h-[1123px] mx-auto rounded-md ">
           <div ref={resumeRef}><ResumePreview /></div>
         </div>
       </FontProvider>
