@@ -6,14 +6,12 @@ import jsPDF from 'jspdf';
 import { useContext, useRef } from 'react'
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next'
-import { FontProvider } from '@/context/FontContext';
 function ViewResume() {
   const { t } = useTranslation()
   const resumeId = useParams().resumeId;
   const { resumeInfo } = useContext(ResumeInfoContext)
   const resumeRef = useRef(null)
 
-  const pxToPt = (px) => (px * 72) / 96;
 
   // 等待所有图片加载完成
   const waitImagesLoaded = async (element) => {
@@ -95,20 +93,11 @@ function ViewResume() {
           <Button onClick={handleShare}>{t('share')}</Button>
         </div>
       </div>
-      <FontProvider resumeId={resumeId} resumeInfo={resumeInfo}>
         <div
           className="max-w-4xl mx-auto p-6 shadow-lg rounded-md border border-gray-200"
-          style={{
-             width: '794px',        // A4 宽度 210mm ≈ 794px
-            minHeight: '1123px',   // A4 高度 297mm ≈ 1123px
-            backgroundColor: 'white', // 确保白色背景
-          }}
         >
           <div ref={resumeRef}><ResumePreview /></div>
         </div>
-      </FontProvider>
-
-
     </>
   )
 }
