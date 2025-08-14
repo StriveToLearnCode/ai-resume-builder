@@ -13,35 +13,49 @@ function ViewResume() {
   const { resumeInfo } = useContext(ResumeInfoContext)
   const resumeRef = useRef(null)
 
-
-  // 智能一页
   const pxToPt = (px) => (px * 72) / 96;
+
+  // 等待所有图片加载完成
+  const waitImagesLoaded = async (element) => {
+    const imgs = Array.from(element.querySelectorAll('img'));
+    await Promise.all(imgs.map(img => {
+      if (img.complete) return Promise.resolve();
+      return new Promise(resolve => {
+        img.onload = img.onerror = () => resolve();
+      });
+    }));
+  };
 
   const handleDownload = async () => {
     if (!resumeRef.current) return;
     const element = resumeRef.current;
 
-    const result = await snapdom(element, {
-      margin: 0,
-      printBackground: true,
-    });
+    // 等待图片加载
+    await waitImagesLoaded(element);
 
-    const img = await result.toPng();
-    await snapdom.download(img)
-    const imgWidthPx = img.width;
-    const imgHeightPx = img.height;
+    try {
+      const result = await snapdom(element, {
+        margin: 0,
+        printBackground: true,
+      });
 
-    const imgWidthPt = pxToPt(imgWidthPx);
-    const imgHeightPt = pxToPt(imgHeightPx);
+      // 生成 PNG
+      const img = await result.toPng();
 
-    const pdf = new jsPDF({
-      unit: 'pt',
-      format: [imgWidthPt, imgHeightPt],
-    });
+      // 转换尺寸
+      const imgWidthPt = pxToPt(img.width);
+      const imgHeightPt = pxToPt(img.height);
 
-    pdf.addImage(img, 'PNG', 0, 0, imgWidthPt, imgHeightPt);
+      const pdf = new jsPDF({
+        unit: 'pt',
+        format: [imgWidthPt, imgHeightPt],
+      });
 
-    pdf.save(`${resumeInfo.title}.pdf`);
+      pdf.addImage(img, 'PNG', 0, 0, imgWidthPt, imgHeightPt);
+      pdf.save(`${resumeInfo.title || 'resume'}.pdf`);
+    } catch (err) {
+      console.error('PDF generation error:', err);
+    }
   };
 
   const handleShare = () => {
@@ -83,4 +97,4 @@ function ViewResume() {
   )
 }
 
-export default ViewResume
+export default ViewResume;
