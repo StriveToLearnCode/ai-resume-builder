@@ -33,30 +33,40 @@ function ViewResume() {
     // 等待图片加载
     await waitImagesLoaded(element);
 
+    // 等待字体加载
+    if (document.fonts) {
+      await document.fonts.ready;
+    }
+
     try {
+      // 使用 snapdom 生成 DOM 截图
       const result = await snapdom(element, {
         margin: 0,
         printBackground: true,
       });
 
-      // 生成 PNG
       const img = await result.toPng();
 
-      // 转换尺寸
-      const imgWidthPt = pxToPt(img.width);
-      const imgHeightPt = pxToPt(img.height);
+      // 固定 PDF 宽度（A4）
+      const pdfWidth = 595; // pt
+      const pdfHeight = (img.height / img.width) * pdfWidth;
 
       const pdf = new jsPDF({
         unit: 'pt',
-        format: [imgWidthPt, imgHeightPt],
+        format: [pdfWidth, pdfHeight],
       });
 
-      pdf.addImage(img, 'PNG', 0, 0, imgWidthPt, imgHeightPt);
+      // 确保背景为白色
+      pdf.setFillColor(255, 255, 255);
+      pdf.rect(0, 0, pdfWidth, pdfHeight, 'F');
+
+      pdf.addImage(img, 'PNG', 0, 0, pdfWidth, pdfHeight);
       pdf.save(`${resumeInfo.title || 'resume'}.pdf`);
     } catch (err) {
       console.error('PDF generation error:', err);
     }
   };
+
 
   const handleShare = () => {
     if (navigator.share) {
