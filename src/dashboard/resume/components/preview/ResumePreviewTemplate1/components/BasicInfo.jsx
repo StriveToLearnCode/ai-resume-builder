@@ -7,7 +7,7 @@ function BasicInfo({ resumeInfo,order }) {
     const {  lineHeight,baseSize, subTitleSize,margin,fontClass } = useContext(FontContext)
   
   return (
-    <div className={`space-y-2 mt-2 ${fontClass}`} style={{
+    <div className={`space-y-2 mt-2 ${fontClass}  whitespace-pre-wrap break-words`} style={{
         lineHeight: lineHeight,
         padding: margin,
       }}>
@@ -40,7 +40,7 @@ function BasicInfo({ resumeInfo,order }) {
           </div>
         ))}
       {/* Github & 博客 */}
-      <p style={{fontSize:baseSize}} className="flex items-center">
+      <p style={{fontSize:baseSize}} className=" whitespace-pre-wrap break-word">
         {resumeInfo?.github && (
           <span className="mr-1">
             <span className="font-bold">{t('github')}：</span>

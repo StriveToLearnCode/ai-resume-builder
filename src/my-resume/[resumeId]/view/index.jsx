@@ -3,15 +3,16 @@ import { ResumeInfoContext } from '@/context/ResumeInfoContext';
 import ResumePreview from '@/dashboard/resume/components/ResumePreview';
 import { snapdom } from '@zumer/snapdom';
 import jsPDF from 'jspdf';
-import { useContext, useRef } from 'react'
+import { useContext, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
+import { FontProvider } from '@/context/FontContext';
+
 function ViewResume() {
   const { t } = useTranslation()
   const resumeId = useParams().resumeId;
   const { resumeInfo } = useContext(ResumeInfoContext)
   const resumeRef = useRef(null)
-
 
   // 等待所有图片加载完成
   const waitImagesLoaded = async (element) => {
@@ -28,42 +29,51 @@ function ViewResume() {
     if (!resumeRef.current) return;
     const element = resumeRef.current;
 
-    // 等待图片加载
+    // 等待图片加载完成
     await waitImagesLoaded(element);
 
-    // 等待字体加载
-    if (document.fonts) {
-      await document.fonts.ready;
-    }
-
     try {
-      // 使用 snapdom 生成 DOM 截图
+      // 临时恢复缩放，避免浏览器放大导致 Canvas 过大
+      const originalTransform = document.body.style.transform;
+      const originalTransformOrigin = document.body.style.transformOrigin;
+      document.body.style.transform = 'scale(1)';
+      document.body.style.transformOrigin = 'top left';
+
+      const { width, height } = element.getBoundingClientRect();
+
+      // snapdom 截图，scale:1 避免过大 Canvas
       const result = await snapdom(element, {
         margin: 0,
         printBackground: true,
+        scale: 1, // 固定比例，避免 EncodingError
       });
 
-      const img = await result.toPng();
+      const imgDataUrl = await result.toPng();
 
-      // 固定 PDF 宽度（A4）
-      const pdfWidth = 595; // pt
-      const pdfHeight = (img.height / img.width) * pdfWidth;
+      // 恢复页面缩放
+      document.body.style.transform = originalTransform;
+      document.body.style.transformOrigin = originalTransformOrigin;
 
+      // PDF 页面按 CSS 尺寸创建
       const pdf = new jsPDF({
-        unit: 'pt',
-        format: [pdfWidth, pdfHeight],
+        unit: 'px',
+        format: [width, height],
       });
 
-      pdf.setFillColor(255, 255, 255);
-      pdf.rect(0, 0, pdfWidth, pdfHeight, 'F');
+      pdf.addImage(
+        imgDataUrl,
+        'PNG',
+        0,
+        0,
+        width,
+        height
+      );
 
-      pdf.addImage(img, 'PNG', 0, 0, pdfWidth, pdfHeight);
       pdf.save(`${resumeInfo.title || 'resume'}.pdf`);
     } catch (err) {
       console.error('PDF generation error:', err);
     }
   };
-
 
   const handleShare = () => {
     if (navigator.share) {
@@ -93,13 +103,13 @@ function ViewResume() {
           <Button onClick={handleShare}>{t('share')}</Button>
         </div>
       </div>
-        <div
-          className="max-w-4xl mx-auto p-6 shadow-lg rounded-md border border-gray-200"
-        >
+      <FontProvider resumeId={resumeId} resumeInfo={resumeInfo}>
+        <div className="w-[896px] mx-auto shadow-lg rounded-md border border-gray-200">
           <div ref={resumeRef}><ResumePreview /></div>
         </div>
+      </FontProvider>
     </>
   )
 }
 
-export default ViewResume;
+export default ViewResume; 

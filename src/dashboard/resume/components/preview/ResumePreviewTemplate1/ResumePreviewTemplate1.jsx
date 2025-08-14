@@ -13,7 +13,7 @@ const ResumePreviewTemplate1 = ({ modules }) => {
   const { resumeInfo } = useContext(ResumeInfoContext)
   
   return (
-    <>
+    <div className="whitespace-pre-wrap break-words">
       {modules.map(({ order, value }) => {
         switch (value) {
           case 'personalInfo':
@@ -38,7 +38,7 @@ const ResumePreviewTemplate1 = ({ modules }) => {
             return null
         }
       })}
-    </>
+    </div>
   )
 }
 

@@ -8,7 +8,7 @@ function PersonalInfo({ resumeInfo }) {
 
   return (
     <div
-      className={`${fontClass} text-center`}
+      className={`${fontClass} text-center  whitespace-pre-wrap break-words`}
       style={{
         lineHeight: lineHeight,
         padding: margin,

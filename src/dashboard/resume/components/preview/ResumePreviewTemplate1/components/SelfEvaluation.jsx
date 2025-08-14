@@ -6,7 +6,7 @@ function SelfEvaluation({ resumeInfo,order }) {
   const { t } = useTranslation()
   const {  lineHeight,baseSize, subTitleSize,margin,fontClass } = useContext(FontContext)
   return (
-    <div className={`${fontClass} space-y-2 mt-2`}
+    <div className={`${fontClass} space-y-2 mt-2  whitespace-pre-wrap break-words`}
     style={{
         lineHeight: lineHeight,
         padding: margin,

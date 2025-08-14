@@ -25,7 +25,7 @@ const router = createBrowserRouter([
       {
         path: '/dashboard',
         element: (
-          <Suspense fallback={LoadingScreen}>
+          <Suspense fallback={<LoadingScreen />}>
             <Dashboard />
           </Suspense>
         ),
@@ -33,7 +33,7 @@ const router = createBrowserRouter([
       {
         path: '/dashboard/resume/:resumeId/edit',
         element: (
-          <Suspense fallback={LoadingScreen}>
+          <Suspense fallback={<LoadingScreen />}>
             <EditResume />
           </Suspense>
         ),
@@ -41,7 +41,7 @@ const router = createBrowserRouter([
       {
         path: '/my-resume/:resumeId/view',
         element: (
-          <Suspense fallback={LoadingScreen}>
+          <Suspense fallback={<LoadingScreen />}>
             <ViewResume />
           </Suspense>
         ),
@@ -49,7 +49,7 @@ const router = createBrowserRouter([
       {
         path: '/my-template',
         element: (
-          <Suspense fallback={LoadingScreen}>
+          <Suspense fallback={<LoadingScreen />}>
             <MyTemplate />
           </Suspense>
         ),
@@ -59,7 +59,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: (
-      <Suspense fallback={LoadingScreen}>
+      <Suspense fallback={<LoadingScreen />}>
         <Home />
       </Suspense>
     ),
@@ -67,12 +67,13 @@ const router = createBrowserRouter([
   {
     path: '/auth/sign-in',
     element: (
-      <Suspense fallback={LoadingScreen}>
+      <Suspense fallback={<LoadingScreen />}>
         <SignInPage />
       </Suspense>
     ),
   },
 ]);
+
 
 createRoot(document.getElementById('root')).render(
   <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
