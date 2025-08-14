@@ -8,6 +8,7 @@ import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), visualizer({ open: true })],
+  base: '/', // 部署在根目录
   resolve: {
     alias: {
       // eslint-disable-next-line no-undef
