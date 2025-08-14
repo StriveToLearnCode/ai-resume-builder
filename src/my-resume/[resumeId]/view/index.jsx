@@ -56,7 +56,6 @@ function ViewResume() {
         format: [pdfWidth, pdfHeight],
       });
 
-      // 确保背景为白色
       pdf.setFillColor(255, 255, 255);
       pdf.rect(0, 0, pdfWidth, pdfHeight, 'F');
 
@@ -99,7 +98,11 @@ function ViewResume() {
       <FontProvider resumeId={resumeId} resumeInfo={resumeInfo}>
         <div
           className="max-w-4xl mx-auto p-6 shadow-lg rounded-md border border-gray-200"
-          style={{ minHeight: '80vh' }}
+          style={{
+             width: '794px',        // A4 宽度 210mm ≈ 794px
+            minHeight: '1123px',   // A4 高度 297mm ≈ 1123px
+            backgroundColor: 'white', // 确保白色背景
+          }}
         >
           <div ref={resumeRef}><ResumePreview /></div>
         </div>
