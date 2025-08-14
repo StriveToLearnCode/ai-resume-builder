@@ -86,13 +86,16 @@ function ViewResume() {
           <Button onClick={handleShare}>{t('share')}</Button>
         </div>
       </div>
+      <FontProvider resumeId={resumeId} resumeInfo={resumeInfo}>
+        <div
+          className="max-w-4xl mx-auto p-6 shadow-lg rounded-md border border-gray-200"
+          style={{ minHeight: '80vh' }}
+        >
+          <div ref={resumeRef}><ResumePreview /></div>
+        </div>
+      </FontProvider>
 
-      <div
-        className="max-w-4xl mx-auto p-6 shadow-lg rounded-md border border-gray-200"
-        style={{ minHeight: '80vh' }}
-      >
-        <div ref={resumeRef}><ResumePreview /></div>
-      </div>
+
     </>
   )
 }
