@@ -47,7 +47,10 @@
 ---
 
 ## 📸  项目截图
-
+![首页](https://raw.githubusercontent.com/StriveToLearnCode/ai-resume-builder/master/public/home.png) 
+!编辑页](https://raw.githubusercontent.com/StriveToLearnCode/ai-resume-builder/master/public/edit.png) 
+!展示页](https://raw.githubusercontent.com/StriveToLearnCode/ai-resume-builder/master/public/generate.png) 
+!简历](https://raw.githubusercontent.com/StriveToLearnCode/ai-resume-builder/master/public/resume.png) 
 
 ---
 
